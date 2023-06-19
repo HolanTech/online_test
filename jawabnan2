@@ -1,0 +1,15 @@
+SELECT mhs_nama
+FROM tb_mahasiswa 
+INNER JOIN tb_mahasiswa_nilai  ON tb_mahasiswa.mhs_id = tb_mahasiswa_nilai.mhs_id
+INNER JOIN tb_matakuliah  ON mk_id = tb_mahasiswa_nilai.mk_id
+WHERE tb_matakuliah.mk_kode = 'MK303'
+GROUP BY tb_mahasiswa.mhs_nama
+HAVING tb_mahasiswa_nilai.nilai = (
+    SELECT MAX(nilai)
+    FROM tb_mahasiswa_nilai
+    WHERE mk_id = (
+        SELECT mk_id
+        FROM tb_matakuliah
+        WHERE mk_kode = 'MK303'
+    )
+);
